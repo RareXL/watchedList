@@ -1,5 +1,4 @@
 import Image from 'next/image'
-import Link from 'next/Link'
 
 const MovieList = ({ movies }) => (
     <ul className='movie-cards'>
