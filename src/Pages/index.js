@@ -2,6 +2,7 @@ import React from 'react'  //investigate why needed
 import fetch from 'isomorphic-fetch'
 import Error from 'next/error'
 import MovieList from '../components/movieList'
+import Layout from '../components/Layout'
 
 class Index extends React.Component {
 
@@ -35,9 +36,9 @@ class Index extends React.Component {
             )
         }
         return (
-            <React.Fragment>
-               <MovieList movies={movies}/>
-            </React.Fragment> 
+            <Layout title="Latest Movies">
+                <MovieList movies={movies} />
+            </Layout>
         )
           
     }

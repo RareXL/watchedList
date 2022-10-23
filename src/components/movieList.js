@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
 const MovieList = ({ movies }) => (
-    <ul className='.movie-cards'>
+    <ul className='movie-cards'>
     {movies.map(movie => {
         return (
             <li className={"movie-card"} key={movie.id}>
