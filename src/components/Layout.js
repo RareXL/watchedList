@@ -14,7 +14,7 @@ const Layout = ({ children, title }) => (
           </a>
         </Link>
       </nav>
-
+        
       {children}
 
       <style jsx>{`
@@ -23,6 +23,7 @@ const Layout = ({ children, title }) => (
           background: #0c0c0c;
         }
         nav {
+          box-shadow: rgb(12 12 12 / 30%) 0px 10px 30px;
           padding: 2rem;
           background: #0c0c0c;
           position: fixed;
