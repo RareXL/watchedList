@@ -1,8 +1,8 @@
 import React from 'react'  //investigate why needed
 import fetch from 'isomorphic-fetch'
 import Error from 'next/error'
-import MovieList from '../components/movieList'
-import Layout from '../components/Layout'
+import MovieList from '../../components/movieList'
+import Layout from '../../components/Layout'
 import Link from 'next/Link'
 
 class Index extends React.Component {
