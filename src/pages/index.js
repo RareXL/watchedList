@@ -3,7 +3,7 @@ import fetch from 'isomorphic-fetch'
 import Error from 'next/error'
 import MovieList from '../components/MovieList'
 import Layout from '../components/Layout'
-import Link from 'next/Link'
+import Link from 'next/link'
 
 class Index extends React.Component {
 
