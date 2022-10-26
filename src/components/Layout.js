@@ -3,15 +3,19 @@ import Head from 'next/head'
 import { fetcher } from '../frontendLibs/fetch';
 import { useCurrentUser } from '../frontendLibs/user';
 import { useRouter } from 'next/router';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect} from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 
 const Layout = ({ children, title }) => {
   const { data: { user } = {}, mutate, isValidating } = useCurrentUser();
   const router = useRouter()
-  if(router.pathname.includes("/userList") && !user){
-      router.replace('/login');
-  }
+
+
+  // useEffect(() => {
+  //   if(router.pathname.includes("/userList") && !user){
+  //     router.push('/login');
+  //   }
+  // });
 
   const onSignOut = useCallback(async () => {
     try {
