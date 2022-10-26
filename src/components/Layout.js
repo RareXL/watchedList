@@ -9,6 +9,9 @@ import toast, { Toaster } from 'react-hot-toast';
 const Layout = ({ children, title }) => {
   const { data: { user } = {}, mutate, isValidating } = useCurrentUser();
   const router = useRouter()
+  if(router.pathname.includes("/userList") && !user){
+      router.replace('/login');
+  }
 
   const onSignOut = useCallback(async () => {
     try {
