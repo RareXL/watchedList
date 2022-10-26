@@ -2,13 +2,17 @@ import Image from "next/image";
 import { useCurrentUser } from '../frontendLibs/user';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
-import React, { useState } from 'react';
+import React, { useState, useEffect  } from 'react';
 
 const MovieList = ({ movies, isOpen }) => {
-    console.log(movies)
     const [currentMovies, setMovies] = useState(movies);
     const router = useRouter();
     const { data: { user } = {}, mutate, isValidating } = useCurrentUser();
+
+    useEffect(() => {
+        setMovies(movies)
+      }, [movies]);
+      
 
     const addToList = (movie) => {
         if(!user){
