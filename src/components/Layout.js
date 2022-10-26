@@ -10,13 +10,6 @@ const Layout = ({ children, title }) => {
   const { data: { user } = {}, mutate, isValidating } = useCurrentUser();
   const router = useRouter()
 
-
-  // useEffect(() => {
-  //   if(router.pathname.includes("/userList") && !user){
-  //     router.push('/login');
-  //   }
-  // });
-
   const onSignOut = useCallback(async () => {
     try {
       await fetcher('/api/auth', {

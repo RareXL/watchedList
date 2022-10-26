@@ -1,14 +1,9 @@
 import { findUserListByUserId  } from '../backendLibs/db';
 import { getMongoDb } from '../backendLibs/mongodb';
 import React from 'react'  //investigate why needed
-import fetch from 'isomorphic-fetch'
-import Error from 'next/error'
 import MovieList from '../components/MovieList'
 import Layout from '../components/Layout'
-import Link from 'next/link'
-import SearchBar from '../components/Autocomplete'
-import { useRef, useState } from 'react';
-
+import { useRouter } from 'next/router';
 class UserList extends React.Component {
   constructor(props) {
     super(props);
@@ -32,12 +27,21 @@ class UserList extends React.Component {
   }
 
   componentDidMount() {
+  
+    var location = window.location.search;
+    console.log(location)
     if(
-      !this.state.movies 
-       || (this.state.movies.length == 0 && !this.props.userId)
-    ){
-      window.location.reload(false);
-    }   
+      location.includes("userId")
+      && (!this.state.movies 
+      || (this.state.movies.length == 0 && !this.props.userId)
+    )){
+       window.location.reload(false);
+    } 
+    
+    if(!location.includes("userId")){
+      window.location.assign("/login");
+      window.alert("please use proper navigation provided")
+    }
 }
 
 
