@@ -36,14 +36,11 @@ class Index extends React.Component {
         query: query,
       }),
     }).then((response) => {
-        console.log(response)
         if (response.status === 200) return response.json();
         throw new Error("failed to authenticate user");
       })
       .then((res) => {
-        console.log(res);
         movieObject = res.movies
-        console.log(this)
         this.setState({
           movies: movieObject,
           isSearch:true
@@ -55,7 +52,6 @@ class Index extends React.Component {
   };
 
   componentDidUpdate() {
-    console.log(this.state.isSearch)
     if (
       !this.state.isSearch &&
       this.props.movies &&
@@ -73,14 +69,17 @@ class Index extends React.Component {
     const { page } = this.props;
     const { movies } = this.state;
 
-    console.log("new", movies)
+  
+  
+
+
     if (!movies || movies.length == 0) {
       return <Error statusCode={503} />;
     }
     return (
       <Layout title="Latest Movies">
         <SearchBar titles={movies} searchMovies={this.searchMovies} />
-        <MovieList movies={movies} />
+        <MovieList movies={movies}  isOpen={true}/>
         <footer className={"movie-footer"}>
           <div>
             <Link href={`/?page=${page + 1}`}>

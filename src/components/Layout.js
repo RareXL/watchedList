@@ -1,11 +1,14 @@
 import Link from 'next/link'
 import Head from 'next/head'
 import { fetcher } from '../frontendLibs/fetch';
-
+import { useCurrentUser } from '../frontendLibs/user';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 
 const Layout = ({ children, title }) => {
+  const { data: { user } = {}, mutate, isValidating } = useCurrentUser();
+  const router = useRouter()
 
   const onSignOut = useCallback(async () => {
     try {
@@ -17,21 +20,69 @@ const Layout = ({ children, title }) => {
     } catch (e) {
       toast.error(e.message);
     }
-  }, []);
+  }, [mutate]);
+
+
+
 return (
   <div>
     <Head>
-        <title>{title}</title>
+      <title>{title}</title>
     </Head>
     <div className="container">
       <nav>
+        {user ? (
+          <Link href="/">
+            <a
+              onClick={onSignOut}
+              style={{ marginRight: "15rem" }}
+              className="abuttons"
+            >
+              <span className="main-title">Logout</span>
+            </a>
+          </Link>
+        ) : (
+          <>
+            <Link href="/login">
+              <a className="abuttons">
+                <span className="main-title">Login</span>
+              </a>
+            </Link>
+            <Link href="/signup">
+              <a style={{ marginRight: "15rem" }} className="abuttons">
+                <span className="main-title">Sign up</span>
+              </a>
+            </Link>
+          </>
+        )}
         <Link href="/">
-          <a>
+          <a
+            style={router.pathname == "/" ? { padding: 15 } : {}}
+            className="abuttons"
+          >
             <span className="main-title">Explore Movies</span>
           </a>
         </Link>
+        {user ? (
+          <Link
+            href={router.pathname.includes("/userList") ? "#" : "/userList"}
+            as={{
+              pathname: "/userList",
+              query: { userId: user._id },
+            }}
+          >
+            <a
+              style={
+                router.pathname.includes("/userList") ? { padding: 15 } : {}
+              }
+              className="abuttons"
+            >
+              <span className="main-title">My Movie List</span>
+            </a>
+          </Link>
+        ) : null}
       </nav>
-        
+
       {children}
 
       <style jsx>{`
@@ -53,7 +104,8 @@ return (
           display: inline-block;
           color: #0c0c0c;
         }
-        nav a {
+        .abuttons {
+          background: #0c0c0c;
           text-decoration: none;
           font-size: 16px;
           border: 2px solid white;
@@ -63,10 +115,20 @@ return (
           -moz-box-shadow: 0 2px 0 rgb(0 0 0/5%);
           box-shadow: 0 2px 0 rgb(0 0 0 / 5%);
           font-weight: bold;
+          margin-right: 10px;
+          color: white;
         }
-        nav .main-title {
+        .abuttons:hover {
+          background: white;
+          border: 2px solid #white;
+          color: #0c0c0c;
+        }
+        .main-title {
           font-weight: bold;
           color: white;
+        }
+        .main-title:hover {
+          color: #0c0c0c;
         }
       `}</style>
       <style global jsx>{`
@@ -78,7 +140,7 @@ return (
       `}</style>
     </div>
   </div>
-)
+);
 };
 
 export default Layout;

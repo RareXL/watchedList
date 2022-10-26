@@ -8,6 +8,14 @@ const LoginPage = () => {
         <title>Login</title>
       </Head>
       <Login />
+
+      <style global jsx>{`
+        body {
+          background: #0c0c0c;
+          font-family: monospace;
+          margin: 0;
+        }
+      `}</style>
     </div>
   );
 };

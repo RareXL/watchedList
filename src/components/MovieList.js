@@ -3,7 +3,7 @@ import { useCurrentUser } from '../frontendLibs/user';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
 
-const MovieList = ({ movies }) => {
+const MovieList = ({ movies, isOpen }) => {
 
     const router = useRouter();
     const { data: { user } = {}, mutate, isValidating } = useCurrentUser();
@@ -12,9 +12,29 @@ const MovieList = ({ movies }) => {
         if(!user){
             router.replace('/login');
         }
-     // toast.success("Your account has been created");
-      
-           console.log(movie);
+        else{
+            toast.success("Happy days, movie has beed added to your persoanl list.");
+            fetch(origin + "/api/userList", {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                user: user,
+                movie:movie
+              }),
+            }).then((response) => {
+                if (response.status === 200) return response.json();
+                throw new Error("something went wrong");
+              })
+              .then((res) => {
+             //   console.log(res);
+              })
+              .catch((error) => {
+                console.log(error);
+              }); 
+        }     
     };
 
   return (
@@ -37,13 +57,22 @@ const MovieList = ({ movies }) => {
                 <span className={"movie-title"}>{movie.title}</span>
                 <span className={"movie-year"}>{movie.release_date}</span>
                 <div className={"movie-description"}>
-                  {movie.overview.length < 220
+                { isOpen?
+                movie.overview.length < 220
                     ? movie.overview
-                    : movie.overview.substring(0, 220) + "..."}
+                    : movie.overview.substring(0, 220) + "...":
+                    movie.overview.length < 350
+                    ? movie.overview
+                    : movie.overview.substring(0, 350) + "..."
+                }
                 </div>
-                <button  onClick={()=>addToList(movie)} className="watchList">
-                  <span>Add to watched List</span>
-                </button>
+                {isOpen?
+                 <button  onClick={()=>addToList(movie)} className="watchList">
+                 <span>Add to watched List</span>
+               </button>:
+                 null
+                }
+               
               </div>
             </div>
           </li>

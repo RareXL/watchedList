@@ -8,6 +8,15 @@ const SignUpPage = () => {
         <title>Sign Up</title>
       </Head>
       <SignUp />
+
+
+      <style global jsx>{`
+        body {
+          background: #0c0c0c;
+          font-family: monospace;
+          margin: 0;
+        }
+      `}</style>
     </div>
   );
 };

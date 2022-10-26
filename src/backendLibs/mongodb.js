@@ -16,10 +16,8 @@ async function createIndexes(client) {
 
 export async function getMongoClient() {
   if (!global.mongoClientPromise) {
-    console.log("mongo",process.env.MONGODB_URI)
     const client = new MongoClient(process.env.MONGODB_URI);
      client.connect()
-     console.log(client)
     global.mongoClientPromise = client
       .connect()
       .then((client) => createIndexes(client));

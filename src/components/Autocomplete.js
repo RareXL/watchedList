@@ -1,22 +1,18 @@
-import {React,useEffect,useState} from 'react'
-import { ReactSearchAutocomplete } from 'react-search-autocomplete'
+import { React, useEffect, useState } from "react";
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 function SearchBar(props) {
-
-
-  const handleOnClick =() =>{
+  const handleOnClick = () => {
     // need a work around to access this value
-    let query = document.querySelectorAll('[data-test="search-input"]')[0].value;
-    if(query.length >= 3){
-      console.log(query)
-      props.searchMovies(query)
+    let query = document.querySelectorAll('[data-test="search-input"]')[0]
+      .value;
+    if (query.length >= 3) {
+      props.searchMovies(query);
     }
-   
   };
   const handleOnSelect = (item) => {
-     props.searchMovies(item.name);
+    props.searchMovies(item.name);
   };
-  
 
   const [movies, setSavedMovies] = useState({ id: 0, name: "Matrix" });
 
@@ -37,11 +33,10 @@ function SearchBar(props) {
     ];
     localStorage.setItem("movies", JSON.stringify(savedMovies));
     setSavedMovies(savedMovies);
-    console.log("tt", savedMovies);
   }, [props]);
 
   return (
-    <div onClick={()=>handleOnClick()} className={"searchContainer"}>
+    <div onClick={() => handleOnClick()} className={"searchContainer"}>
       <ReactSearchAutocomplete
         items={movies}
         onSelect={handleOnSelect}
@@ -55,11 +50,11 @@ function SearchBar(props) {
           z-index: 1000;
           width: 30%;
           top: 2rem;
-          left: 38rem;
+          right: 3rem;
         }
       `}</style>
     </div>
   );
 }
 
-export default SearchBar
+export default SearchBar;
