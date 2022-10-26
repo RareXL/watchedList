@@ -11,9 +11,7 @@ class UserList extends React.Component {
       movies: props.movies,
     };
   }
-
   
-
   componentDidUpdate(nextProps) {
     if (
       nextProps.movies &&

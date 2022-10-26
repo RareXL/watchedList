@@ -52,7 +52,7 @@ const Login = () => {
           <input className={"input"} type="email" required id="email" ref={emailRef} />
         </div>
         <div className={"control"}>
-          <label htmlFor="password">Address</label>
+          <label htmlFor="password">Password</label>
           <input className={"input"} type="password" required id="password" ref={passwordRef} />
         </div>
         <div className={'actions'}>

@@ -1,6 +1,6 @@
 //insertOrUpdateUserList(db,{ user, movie})
 
-import { insertOrUpdateUserList } from '../../../backendLibs/db';
+import { insertOrUpdateUserList, deleteFromUserList } from '../../../backendLibs/db';
 import { auths} from '../../../backendLibs/middlewares';
 import { getMongoDb } from '../../../backendLibs/mongodb';
 import { ncOpts } from '../../../backendLibs/nc';
@@ -30,5 +30,30 @@ handler.post(
    
   }
 );
+
+handler.delete(
+  ...auths,
+  async (req, res) => {
+    const db = await getMongoDb();
+
+    let {user, movie } = req.body;
+
+    const movies = await deleteFromUserList(db, {
+        user,
+        movie
+    });
+
+    if(movies){
+
+        res.status(200).json({movies:movies});
+    }
+    else{
+        res.status(500).json({movies:null});
+    }
+   
+   
+  }
+);
+
 
 export default handler;

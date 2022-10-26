@@ -2,9 +2,11 @@ import Image from "next/image";
 import { useCurrentUser } from '../frontendLibs/user';
 import { useRouter } from 'next/router';
 import toast, { Toaster } from 'react-hot-toast';
+import React, { useState } from 'react';
 
 const MovieList = ({ movies, isOpen }) => {
-
+    console.log(movies)
+    const [currentMovies, setMovies] = useState(movies);
     const router = useRouter();
     const { data: { user } = {}, mutate, isValidating } = useCurrentUser();
 
@@ -13,7 +15,6 @@ const MovieList = ({ movies, isOpen }) => {
             router.replace('/login');
         }
         else{
-            toast.success("Happy days, movie has beed added to your persoanl list.");
             fetch(origin + "/api/userList", {
               method: "POST",
               headers: {
@@ -29,7 +30,7 @@ const MovieList = ({ movies, isOpen }) => {
                 throw new Error("something went wrong");
               })
               .then((res) => {
-             //   console.log(res);
+                toast.success("Happy days, movie has beed added to your persoanl list.");
               })
               .catch((error) => {
                 console.log(error);
@@ -37,12 +38,44 @@ const MovieList = ({ movies, isOpen }) => {
         }     
     };
 
+    const deleteFromList = (movie) => {
+        if(!user){
+            router.replace('/login');
+        }
+        else{
+            fetch(origin + "/api/userList", {
+              method: "DELETE",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                user: user,
+                movie:movie
+              }),
+            }).then((response) => {
+                if (response.status === 200) return response.json();
+                throw new Error("something went wrong");
+              })
+              .then((res) => {
+                movies = res.movies
+                setMovies(movies)
+                toast.success("Happy days, movie removed");
+              })
+              .catch((error) => {
+                console.log(error);
+              }); 
+        }     
+    };
+
+  
+
   return (
     <ul className="movie-cards">
-      {movies.map((movie) => {
+      {currentMovies.map((movie) => {
         return (
           <li className={"movie-card"} key={movie.id}>
-             <Toaster />
+            <Toaster />
             <div className={"movie-container"}>
               <div className={"movie-block"}>
                 <Image
@@ -57,22 +90,25 @@ const MovieList = ({ movies, isOpen }) => {
                 <span className={"movie-title"}>{movie.title}</span>
                 <span className={"movie-year"}>{movie.release_date}</span>
                 <div className={"movie-description"}>
-                { isOpen?
-                movie.overview.length < 220
+                  {movie.overview.length < 220
                     ? movie.overview
-                    : movie.overview.substring(0, 220) + "...":
-                    movie.overview.length < 350
-                    ? movie.overview
-                    : movie.overview.substring(0, 350) + "..."
-                }
+                    : movie.overview.substring(0, 220) + "..."}
                 </div>
-                {isOpen?
-                 <button  onClick={()=>addToList(movie)} className="watchList">
-                 <span>Add to watched List</span>
-               </button>:
-                 null
+                {isOpen ? (
+                  <button
+                    onClick={() => addToList(movie)}
+                    className="watchList"
+                  >
+                    <span>Add to watched List</span>
+                  </button>
+                ) : 
+                <button
+                    onClick={() => deleteFromList(movie)}
+                    className="watchList"
+                  >
+                    <span>Delete Movie</span>
+                  </button>
                 }
-               
               </div>
             </div>
           </li>

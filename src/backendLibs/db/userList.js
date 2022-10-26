@@ -26,6 +26,34 @@ export async function insertOrUpdateUserList(db,{ user, movie}) {
 
   }
 
+  export async function deleteFromUserList(db,{ user, movie}) {
+
+    let dbUser = await findUserByEmail(db, user.email);
+    let dbUserList = await findUserListByUserId(db, dbUser._id);
+    if (dbUserList) {
+      let currentMovies = dbUserList.movies;
+      let dbMovies = currentMovies.filter(function( item ) {
+        return item.id !== movie.id;
+      });
+      if (dbMovies) {
+        dbUserList.movies = dbMovies
+        dbUserList = await updateUserListById(db, dbUserList._id, dbUserList);
+        if(dbUserList){
+            return dbMovies
+        }
+        else{
+          return null  
+        } 
+      }
+    }
+    else{
+     return null   
+    }
+    return null  
+  }
+
+  
+
   export async function findUserListByUserId(db, userListId) {
     return db
     .collection('userLists')
